@@ -1,0 +1,584 @@
+[
+    {
+        "id": "jemuran_flow",
+        "type": "tab",
+        "label": "Jemuran Pintar",
+        "disabled": false,
+        "info": "Dashboard untuk monitoring dan kontrol Jemuran Pintar ESP32 via MQTT"
+    },
+    {
+        "id": "mqtt_broker_hivemq",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Public Broker",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true
+    },
+    {
+        "id": "dashboard_tab",
+        "type": "ui_tab",
+        "name": "Jemuran Pintar",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "group_status",
+        "type": "ui_group",
+        "name": "Status Sistem",
+        "tab": "dashboard_tab",
+        "order": 1,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "group_sensor",
+        "type": "ui_group",
+        "name": "Sensor",
+        "tab": "dashboard_tab",
+        "order": 2,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "group_control",
+        "type": "ui_group",
+        "name": "Kontrol",
+        "tab": "dashboard_tab",
+        "order": 3,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "mqtt_in_jemuran",
+        "type": "mqtt in",
+        "z": "jemuran_flow",
+        "name": "MQTT In: jemuran/data",
+        "topic": "jemuran/data",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "mqtt_broker_hivemq",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "debug_input",
+                "extract_rain",
+                "extract_ldr",
+                "extract_servo",
+                "extract_status",
+                "extract_mode",
+                "extract_weather",
+                "extract_rain_status",
+                "extract_ldr_status"
+            ]
+        ]
+    },
+    {
+        "id": "debug_input",
+        "type": "debug",
+        "z": "jemuran_flow",
+        "name": "Debug MQTT Data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 410,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "extract_rain",
+        "type": "change",
+        "z": "jemuran_flow",
+        "name": "Extract rain_val",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.rain_val",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 100,
+        "wires": [
+            [
+                "gauge_rain"
+            ]
+        ]
+    },
+    {
+        "id": "extract_ldr",
+        "type": "change",
+        "z": "jemuran_flow",
+        "name": "Extract ldr_val",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.ldr_val",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 140,
+        "wires": [
+            [
+                "gauge_ldr"
+            ]
+        ]
+    },
+    {
+        "id": "extract_servo",
+        "type": "change",
+        "z": "jemuran_flow",
+        "name": "Extract servo_angle",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.servo_angle",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 430,
+        "y": 180,
+        "wires": [
+            [
+                "gauge_servo"
+            ]
+        ]
+    },
+    {
+        "id": "extract_status",
+        "type": "change",
+        "z": "jemuran_flow",
+        "name": "Extract status",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.status",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "text_status"
+            ]
+        ]
+    },
+    {
+        "id": "extract_mode",
+        "type": "change",
+        "z": "jemuran_flow",
+        "name": "Extract mode",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.mode",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 410,
+        "y": 260,
+        "wires": [
+            [
+                "text_mode"
+            ]
+        ]
+    },
+    {
+        "id": "extract_weather",
+        "type": "change",
+        "z": "jemuran_flow",
+        "name": "Extract weather",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.weather",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 300,
+        "wires": [
+            [
+                "text_weather"
+            ]
+        ]
+    },
+    {
+        "id": "extract_rain_status",
+        "type": "change",
+        "z": "jemuran_flow",
+        "name": "Extract rain_status",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.rain_status",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 430,
+        "y": 340,
+        "wires": [
+            [
+                "text_rain_status"
+            ]
+        ]
+    },
+    {
+        "id": "extract_ldr_status",
+        "type": "change",
+        "z": "jemuran_flow",
+        "name": "Extract ldr_status",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.ldr_status",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 430,
+        "y": 380,
+        "wires": [
+            [
+                "text_ldr_status"
+            ]
+        ]
+    },
+    {
+        "id": "gauge_rain",
+        "type": "ui_gauge",
+        "z": "jemuran_flow",
+        "name": "Rain Sensor Gauge",
+        "group": "group_sensor",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Rain Sensor",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "4095",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "2000",
+        "seg2": "3000",
+        "className": "",
+        "x": 650,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "gauge_ldr",
+        "type": "ui_gauge",
+        "z": "jemuran_flow",
+        "name": "Light Sensor Gauge",
+        "group": "group_sensor",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Light Sensor",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "4095",
+        "colors": [
+            "#1f77b4",
+            "#ff7f0e",
+            "#ffeb3b"
+        ],
+        "seg1": "1200",
+        "seg2": "2500",
+        "className": "",
+        "x": 650,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "gauge_servo",
+        "type": "ui_gauge",
+        "z": "jemuran_flow",
+        "name": "Servo Gauge",
+        "group": "group_status",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Servo",
+        "label": "°",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "180",
+        "colors": [
+            "#e74c3c",
+            "#f39c12",
+            "#2ecc71"
+        ],
+        "seg1": "60",
+        "seg2": "120",
+        "className": "",
+        "x": 630,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "text_status",
+        "type": "ui_text",
+        "z": "jemuran_flow",
+        "group": "group_status",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Status Text",
+        "label": "Status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 630,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "text_mode",
+        "type": "ui_text",
+        "z": "jemuran_flow",
+        "group": "group_status",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Mode Text",
+        "label": "Mode",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 630,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "text_weather",
+        "type": "ui_text",
+        "z": "jemuran_flow",
+        "group": "group_status",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "Weather Text",
+        "label": "Cuaca",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 640,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "text_rain_status",
+        "type": "ui_text",
+        "z": "jemuran_flow",
+        "group": "group_sensor",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "Rain Status Text",
+        "label": "Status Hujan",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 650,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "text_ldr_status",
+        "type": "ui_text",
+        "z": "jemuran_flow",
+        "group": "group_sensor",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "LDR Status Text",
+        "label": "Status Cahaya",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 650,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "btn_buka",
+        "type": "ui_button",
+        "z": "jemuran_flow",
+        "name": "Button BUKA",
+        "group": "group_control",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "BUKA",
+        "tooltip": "Buka jemuran manual",
+        "color": "#ffffff",
+        "bgcolor": "#2ecc71",
+        "className": "",
+        "icon": "",
+        "payload": "OPEN",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "x": 150,
+        "y": 480,
+        "wires": [
+            [
+                "mqtt_out_command"
+            ]
+        ]
+    },
+    {
+        "id": "btn_tutup",
+        "type": "ui_button",
+        "z": "jemuran_flow",
+        "name": "Button TUTUP",
+        "group": "group_control",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "TUTUP",
+        "tooltip": "Tutup jemuran manual",
+        "color": "#ffffff",
+        "bgcolor": "#e74c3c",
+        "className": "",
+        "icon": "",
+        "payload": "CLOSE",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "x": 150,
+        "y": 520,
+        "wires": [
+            [
+                "mqtt_out_command"
+            ]
+        ]
+    },
+    {
+        "id": "btn_auto",
+        "type": "ui_button",
+        "z": "jemuran_flow",
+        "name": "Button AUTO",
+        "group": "group_control",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "AUTO MODE",
+        "tooltip": "Aktifkan mode otomatis",
+        "color": "#ffffff",
+        "bgcolor": "#3498db",
+        "className": "",
+        "icon": "",
+        "payload": "AUTO",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "x": 150,
+        "y": 560,
+        "wires": [
+            [
+                "mqtt_out_command"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_command",
+        "type": "mqtt out",
+        "z": "jemuran_flow",
+        "name": "MQTT Out: jemuran/command",
+        "topic": "jemuran/command",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_broker_hivemq",
+        "x": 420,
+        "y": 520,
+        "wires": []
+    }
+]
